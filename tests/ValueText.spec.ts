@@ -109,8 +109,8 @@ describe("ValueText test specs", () => {
 
                         return instance.setup({
                             attributes: aliases,
-                            debug: true,
-                            // debug: false,
+                            // debug: true,
+                            debug: false,
                             fallbackLng: "en",
                             lng: "en",
                             resources: {
@@ -123,7 +123,6 @@ describe("ValueText test specs", () => {
                         });
                     }));
 
-                setTimeout(() => { console.log("Waited for a second"); done(); }, 1000);
             });
 
             it("Should render the translated text with a i18nKey", (done) => {
