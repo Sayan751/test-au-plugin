@@ -8,21 +8,21 @@ import { Aurelia, PLATFORM } from "aurelia-framework";
 describe("NormalText test specs", () => {
 
     describe("View-model specs", () => {
-    let target: NormalTextCustomElement, i18n: I18N, element: Element, ea: EventAggregator, locale: string, spy: jasmine.Spy;
+        let target: NormalTextCustomElement, i18n: I18N, element: Element, ea: EventAggregator, locale: string, spy: jasmine.Spy;
 
-    beforeEach(() => {
-        ea = new EventAggregator();
-        element = document.createElement("div");
-        i18n = new I18N();
-        spy = spyOn(i18n, "setLocale").and.callFake((data) => { locale = data; });
-    });
+        beforeEach(() => {
+            ea = new EventAggregator();
+            element = document.createElement("div");
+            i18n = new I18N();
+            spy = spyOn(i18n, "setLocale").and.callFake((data) => { locale = data; });
+        });
 
-    afterEach(() => {
-        if (target && target["localeChangeSubscription"]) {
-            target["localeChangeSubscription"].unsubscribe();
-            target["localeChangeSubscription"] = undefined;
-        }
-    });
+        afterEach(() => {
+            if (target && target["localeChangeSubscription"]) {
+                target["localeChangeSubscription"].unsubscribe();
+                target["localeChangeSubscription"] = undefined;
+            }
+        });
 
         it("Can be instantiated", () => {
             target = new NormalTextCustomElement(i18n, element, ea);
