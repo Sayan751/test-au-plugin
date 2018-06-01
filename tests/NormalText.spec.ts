@@ -2,7 +2,7 @@ import { bootstrap } from "aurelia-bootstrapper";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { I18N, TCustomAttribute } from "aurelia-i18n";
 import { StageComponent, ComponentTester } from "aurelia-testing";
-import { NormalTextCustomElement } from "../../src/NormalText/NormalText";
+import { NormalTextCustomElement } from "../src/NormalText/NormalText";
 import { Aurelia, PLATFORM } from "aurelia-framework";
 
 describe("NormalText test specs", () => {
