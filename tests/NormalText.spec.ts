@@ -110,7 +110,7 @@ describe("NormalText test specs", () => {
                     .then(() => {
                         const spanElement = document.querySelector('normal-text#i18n1>span');
                         console.log(spanElement);
-                        expect(spanElement.textContent.trim()).toBe('test');
+                        expect(spanElement.textContent.trim()).toBe('English test');
                     })
                     .catch(e => { console.log(e.toString()) })
                     .finally(() => {
