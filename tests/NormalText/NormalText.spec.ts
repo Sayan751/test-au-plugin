@@ -1,12 +1,13 @@
 import { bootstrap } from "aurelia-bootstrapper";
 import { EventAggregator } from "aurelia-event-aggregator";
 import { I18N, TCustomAttribute } from "aurelia-i18n";
-import { StageComponent } from "aurelia-testing";
+import { StageComponent, ComponentTester } from "aurelia-testing";
 import { NormalTextCustomElement } from "../../src/NormalText/NormalText";
 import { Aurelia, PLATFORM } from "aurelia-framework";
 
 describe("NormalText test specs", () => {
 
+    describe("View-model specs", () => {
     let target: NormalTextCustomElement, i18n: I18N, element: Element, ea: EventAggregator, locale: string, spy: jasmine.Spy;
 
     beforeEach(() => {
@@ -23,7 +24,6 @@ describe("NormalText test specs", () => {
         }
     });
 
-    describe("View-model specs", () => {
         it("Can be instantiated", () => {
             target = new NormalTextCustomElement(i18n, element, ea);
             expect(target).toBeDefined();
@@ -73,7 +73,7 @@ describe("NormalText test specs", () => {
 
         describe("i18n specs", () => {
 
-            let component;
+            let component: ComponentTester<any>;
             beforeEach(() => {
                 component = StageComponent
                     .withResources("NormalText/NormalText")
@@ -109,7 +109,8 @@ describe("NormalText test specs", () => {
                     .create(bootstrap)
                     .then(() => {
                         const spanElement = document.querySelector('normal-text#i18n1>span');
-                        expect(spanElement.textContent.trim()).toBe('English test');
+                        console.log(spanElement);
+                        expect(spanElement.textContent.trim()).toBe('test');
                     })
                     .catch(e => { console.log(e.toString()) })
                     .finally(() => {
