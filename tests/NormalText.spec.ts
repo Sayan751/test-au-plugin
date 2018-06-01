@@ -32,92 +32,91 @@ describe("NormalText test specs", () => {
 
     describe("View specs", () => {
 
-        describe("simple value specs", () => {
-            it("Should render a dynamic text", (done) => {
-                const component = StageComponent
-                    .withResources("NormalText/NormalText")
-                    .inView("<normal-text value.bind='boundValue'></normal-text>")
-                    .boundTo({ boundValue: "Hello Normal Text" });
+        let component: ComponentTester<any>;
+        beforeEach(() => {
+            component = StageComponent
+                .withResources("NormalText/NormalText");
 
-                component
-                    .create(bootstrap)
-                    .then(() => {
-                        const spanElement = document.querySelector('normal-text>span');
-                        expect(spanElement.textContent.trim()).toBe('Hello Normal Text');
-                    })
-                    .catch(e => { console.log(e.toString()) })
-                    .finally(() => {
-                        component.dispose();
-                        done();
-                    });
-            });
+            component.bootstrap((aurelia: Aurelia) => aurelia.use
+                .standardConfiguration()
+                // .developmentLogging()
+                .plugin(PLATFORM.moduleName("aurelia-i18n"), (instance) => {
+                    const aliases = ["t"];
+                    TCustomAttribute.configureAliases(aliases);
 
-            it("Should render the provided static text without i18nKey", (done) => {
-                const component = StageComponent
-                    .withResources("NormalText/NormalText")
-                    .inView("<normal-text value='Hello Static Text'></normal-text>");
-
-                component
-                    .create(bootstrap)
-                    .then(() => {
-                        const spanElement = document.querySelector('normal-text>span');
-                        expect(spanElement.textContent.trim()).toBe('Hello Static Text');
-                    })
-                    .catch(e => { console.log(e.toString()) })
-                    .finally(() => {
-                        component.dispose();
-                        done();
-                    });
-            });
-        });
-
-        describe("i18n specs", () => {
-
-            let component: ComponentTester<any>;
-            beforeEach(() => {
-                component = StageComponent
-                    .withResources("NormalText/NormalText")
-                    .inView("<normal-text id='i18n1' value='Ignored Text' i18n-key='test'></normal-text>");
-
-                component.bootstrap((aurelia: Aurelia) => aurelia.use
-                    .standardConfiguration()
-                    // .developmentLogging()
-                    .plugin(PLATFORM.moduleName("aurelia-i18n"), (instance) => {
-                        const aliases = ["t"];
-                        TCustomAttribute.configureAliases(aliases);
-
-                        return instance.setup({
-                            attributes: aliases,
-                            // debug: true,
-                            debug: false,
-                            fallbackLng: "en",
-                            lng: "en",
-                            resources: {
-                                en: {
-                                    translation: {
-                                        test: "English test"
-                                    }
+                    return instance.setup({
+                        attributes: aliases,
+                        // debug: true,
+                        debug: false,
+                        fallbackLng: "en",
+                        lng: "en",
+                        // appendNamespaceToCIMode: true,
+                        // initImmediate: false,
+                        resources: {
+                            en: {
+                                translation: {
+                                    test: "English test"
                                 }
                             }
-                        });
-                    }));
-
-            });
-
-            it("Should render the translated text with a i18nKey", (done) => {
-                component
-                    .create(bootstrap)
-                    .then(() => {
-                        const spanElement = document.querySelector('normal-text#i18n1>span');
-                        console.log(spanElement);
-                        expect(spanElement.textContent.trim()).toBe('English test');
-                    })
-                    .catch(e => { console.log(e.toString()) })
-                    .finally(() => {
-                        component.dispose();
-                        done();
+                        }
                     });
-            });
+                }));
+
+        });
+
+        it("Should render a dynamic text", (done) => {
+            // const component = StageComponent
+            //     .withResources("NormalText/NormalText")
+            //     ;
+
+            component
+                .inView("<normal-text value.bind='boundValue'></normal-text>")
+                .boundTo({ boundValue: "Hello Normal Text" })
+                .create(bootstrap)
+                .then(() => {
+                    const spanElement = document.querySelector('normal-text>span');
+                    expect(spanElement.textContent.trim()).toBe('Hello Normal Text');
+                })
+                .catch(e => { console.log(e.toString()) })
+                .finally(() => {
+                    component.dispose();
+                    done();
+                });
+        });
+
+        it("Should render the provided static text without i18nKey", (done) => {
+            // const component = StageComponent
+            //     .withResources("NormalText/NormalText")
+            //     ;
+
+            component
+                .inView("<normal-text value='Hello Static Text'></normal-text>")
+                .create(bootstrap)
+                .then(() => {
+                    const spanElement = document.querySelector('normal-text>span');
+                    expect(spanElement.textContent.trim()).toBe('Hello Static Text');
+                })
+                .catch(e => { console.log(e.toString()) })
+                .finally(() => {
+                    component.dispose();
+                    done();
+                });
+        });
+
+        it("Should render the translated text with a i18nKey", (done) => {
+            component
+                .inView("<normal-text id='i18n1' value='Ignored Text' i18n-key='test'></normal-text>")
+                .create(bootstrap)
+                .then(() => {
+                    const spanElement = document.querySelector('normal-text#i18n1>span');
+                    console.log(spanElement);
+                    expect(spanElement.textContent.trim()).toBe('English test');
+                })
+                .catch(e => { console.log(e.toString()) })
+                .finally(() => {
+                    component.dispose();
+                    done();
+                });
         });
     });
 });

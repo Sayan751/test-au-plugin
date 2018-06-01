@@ -32,13 +32,41 @@ describe("ValueText test specs", () => {
 
     describe("View specs", () => {
 
+        let component;
+        beforeEach(() => {
+            component = StageComponent
+                .withResources("ValueText/ValueText");
+
+            component.bootstrap((aurelia: Aurelia) => aurelia.use
+                .standardConfiguration()
+                // .developmentLogging()
+                .plugin(PLATFORM.moduleName("aurelia-i18n"), (instance) => {
+                    const aliases = ["t"];
+                    TCustomAttribute.configureAliases(aliases);
+
+                    return instance.setup({
+                        attributes: aliases,
+                        // debug: true,
+                        debug: false,
+                        fallbackLng: "en",
+                        lng: "en",
+                        resources: {
+                            en: {
+                                translation: {
+                                    test: "English test"
+                                }
+                            }
+                        }
+                    });
+                }));
+
+        });
+
         it("Should render the text in a strong element without any additional style", (done) => {
             const randomId = randomIdGenerator();
-            const component = StageComponent
-                .withResources("ValueText/ValueText")
-                .inView(`<value-text id='${randomId}' value='Hello Static Text'></value-text>`);
 
             component
+                .inView(`<value-text id='${randomId}' value='Hello Static Text'></value-text>`)
                 .create(bootstrap)
                 .then(() => {
                     const strongElement: HTMLElement = document.querySelector(`value-text#${randomId}>strong`);
@@ -55,12 +83,10 @@ describe("ValueText test specs", () => {
         });
 
         it("Should render a dynamic text", (done) => {
-            const component1 = StageComponent
-                .withResources("ValueText/ValueText")
-                .inView("<value-text value.bind='boundValue'></value-text>")
-                .boundTo({ boundValue: "Hello Value Text" });
 
-            component1
+            component
+                .inView("<value-text value.bind='boundValue'></value-text>")
+                .boundTo({ boundValue: "Hello Value Text" })
                 .create(bootstrap)
                 .then(() => {
                     const strongElement = document.querySelector('value-text>strong');
@@ -68,17 +94,15 @@ describe("ValueText test specs", () => {
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component1.dispose();
+                    component.dispose();
                     done();
                 });
         });
 
         it("Should render the provided static text without i18nKey", (done) => {
-            const component2 = StageComponent
-                .withResources("ValueText/ValueText")
-                .inView("<value-text value='Hello Static Text'></value-text>");
 
-            component2
+            component
+                .inView("<value-text value='Hello Static Text'></value-text>")
                 .create(bootstrap)
                 .then(() => {
                     const strongElement = document.querySelector('value-text>strong');
@@ -86,61 +110,26 @@ describe("ValueText test specs", () => {
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component2.dispose();
+                    component.dispose();
                     done();
                 });
         });
 
-
-        describe("i18n specs", () => {
-
-            let component3;
-            beforeEach((done) => {
-                component3 = StageComponent
-                    .withResources("ValueText/ValueText")
-                    .inView("<value-text id='i18n1' value='Ignored Text' i18n-key='test'></value-text>");
-
-                component3.bootstrap((aurelia: Aurelia) => aurelia.use
-                    .standardConfiguration()
-                    // .developmentLogging()
-                    .plugin(PLATFORM.moduleName("aurelia-i18n"), (instance) => {
-                        const aliases = ["t"];
-                        TCustomAttribute.configureAliases(aliases);
-
-                        return instance.setup({
-                            attributes: aliases,
-                            // debug: true,
-                            debug: false,
-                            fallbackLng: "en",
-                            lng: "en",
-                            resources: {
-                                en: {
-                                    translation: {
-                                        test: "English test"
-                                    }
-                                }
-                            }
-                        });
-                    }));
-
-            });
-
-            it("Should render the translated text with a i18nKey", (done) => {
-                component3
-                    .create(bootstrap)
-                    .then(() => {
-                        const strongElement = document.querySelector('value-text#i18n1>strong');
-                        expect(strongElement.textContent.trim()).toBe('English test');
-                    })
-                    .catch(e => { console.log(e.toString()) })
-                    .finally(() => {
-                        component3.dispose();
-                        done();
-                    });
-            });
+        it("Should render the translated text with a i18nKey", (done) => {
+            component
+                .inView("<value-text id='i18n1' value='Ignored Text' i18n-key='test'></value-text>")
+                .create(bootstrap)
+                .then(() => {
+                    const strongElement = document.querySelector('value-text#i18n1>strong');
+                    expect(strongElement.textContent.trim()).toBe('English test');
+                })
+                .catch(e => { console.log(e.toString()) })
+                .finally(() => {
+                    component.dispose();
+                    done();
+                });
         });
     });
-
 });
 
 const possibleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
