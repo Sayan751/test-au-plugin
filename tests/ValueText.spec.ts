@@ -73,7 +73,6 @@ describe("ValueText test specs", () => {
                 .create(bootstrap)
                 .then(() => {
                     const strongElement: HTMLElement = document.querySelector(`value-text#${randomId}>strong`);
-                    console.log(strongElement);
                     expect(!!strongElement).toBeTruthy();
                     expect(strongElement.style.cssText).toBeFalsy();
                     expect(Array.from(strongElement.classList).filter(item => !item.startsWith("au-")).length).toBe(0);
