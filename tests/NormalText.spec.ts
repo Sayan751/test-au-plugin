@@ -61,13 +61,12 @@ describe("NormalText test specs", () => {
                         }
                     });
                 }));
-
+        });
+        afterEach(() => {
+            component.dispose();
         });
 
         it("Should render a dynamic text", (done) => {
-            // const component = StageComponent
-            //     .withResources("NormalText/NormalText")
-            //     ;
 
             component
                 .inView("<normal-text value.bind='boundValue'></normal-text>")
@@ -75,30 +74,29 @@ describe("NormalText test specs", () => {
                 .create(bootstrap)
                 .then(() => {
                     const spanElement = document.querySelector('normal-text>span');
+                    expect(!!spanElement).toBeTruthy();
                     expect(spanElement.textContent.trim()).toBe('Hello Normal Text');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
 
         it("Should render the provided static text without i18nKey", (done) => {
-            // const component = StageComponent
-            //     .withResources("NormalText/NormalText")
-            //     ;
 
             component
                 .inView("<normal-text value='Hello Static Text'></normal-text>")
                 .create(bootstrap)
                 .then(() => {
                     const spanElement = document.querySelector('normal-text>span');
+                    expect(!!spanElement).toBeTruthy();
                     expect(spanElement.textContent.trim()).toBe('Hello Static Text');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
@@ -110,11 +108,12 @@ describe("NormalText test specs", () => {
                 .then(() => {
                     const spanElement = document.querySelector('normal-text#i18n1>span');
                     console.log(spanElement);
+                    expect(!!spanElement).toBeTruthy();
                     expect(spanElement.textContent.trim()).toBe('English test');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });

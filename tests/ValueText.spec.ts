@@ -61,6 +61,9 @@ describe("ValueText test specs", () => {
                 }));
 
         });
+        afterEach(() => {
+            component.dispose();
+        });
 
         it("Should render the text in a strong element without any additional style", (done) => {
             const randomId = randomIdGenerator();
@@ -71,13 +74,13 @@ describe("ValueText test specs", () => {
                 .then(() => {
                     const strongElement: HTMLElement = document.querySelector(`value-text#${randomId}>strong`);
                     console.log(strongElement);
-                    expect(strongElement).toBeDefined();
+                    expect(!!strongElement).toBeTruthy();
                     expect(strongElement.style.cssText).toBeFalsy();
                     expect(Array.from(strongElement.classList).filter(item => !item.startsWith("au-")).length).toBe(0);
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
@@ -90,11 +93,12 @@ describe("ValueText test specs", () => {
                 .create(bootstrap)
                 .then(() => {
                     const strongElement = document.querySelector('value-text>strong');
+                    expect(!!strongElement).toBeTruthy();
                     expect(strongElement.textContent.trim()).toBe('Hello Value Text');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
@@ -106,11 +110,12 @@ describe("ValueText test specs", () => {
                 .create(bootstrap)
                 .then(() => {
                     const strongElement = document.querySelector('value-text>strong');
+                    expect(!!strongElement).toBeTruthy();
                     expect(strongElement.textContent.trim()).toBe('Hello Static Text');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
@@ -121,11 +126,12 @@ describe("ValueText test specs", () => {
                 .create(bootstrap)
                 .then(() => {
                     const strongElement = document.querySelector('value-text#i18n1>strong');
+                    expect(!!strongElement).toBeTruthy();
                     expect(strongElement.textContent.trim()).toBe('English test');
                 })
                 .catch(e => { console.log(e.toString()) })
                 .finally(() => {
-                    component.dispose();
+                    // component.dispose();
                     done();
                 });
         });
